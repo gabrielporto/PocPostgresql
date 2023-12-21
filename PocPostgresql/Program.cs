@@ -1,11 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using PocPostgresql.Controllers;
 
 namespace PocPostgresql
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -18,9 +17,8 @@ namespace PocPostgresql
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //builder.Services.AddDbContext<PostgresqlContext>();
-          builder.Services.AddEntityFrameworkNpgsql()
-            .AddDbContext<PostgresqlContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresqlDB")));
+            builder.Services.AddEntityFrameworkNpgsql()
+              .AddDbContext<PostgresqlContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresqlDB")));
 
 
             var app = builder.Build();
@@ -32,11 +30,11 @@ namespace PocPostgresql
                 app.UseSwaggerUI();
             }
 
-                        if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-};
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            };
 
             app.UseHttpsRedirection();
 
@@ -44,8 +42,6 @@ namespace PocPostgresql
 
 
             app.MapControllers();
-
-                        app.MapBlogEndpoints();
 
             app.Run();
         }
